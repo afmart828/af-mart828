@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext/CartContext';
 import { UserProvider } from './context/UserContext/UserContext';
+import { WishlistProvider } from './context/WishlistContext/WishlistContext';
 import MainLayout from './components/MainLayout/MainLayout';
 import Home from './page/Home/Home';
 import ProductPage from './page/ProductPage/ProductPage';
@@ -26,7 +27,8 @@ function App() {
     <Router>
       <UserProvider>
         <CartProvider>
-          <MainLayout>
+          <WishlistProvider>
+            <MainLayout>
             <Routes>
 <Route path="/" element={<Home />} />
               <Route path="/product/:id" element={<ProductPage />} />
@@ -46,6 +48,7 @@ function App() {
               <Route path="/wishlist" element={<Wishlist />} />
             </Routes>
           </MainLayout>
+          </WishlistProvider>
         </CartProvider>
       </UserProvider>
     </Router>
