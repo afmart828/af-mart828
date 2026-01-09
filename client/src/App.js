@@ -17,6 +17,7 @@ import Careers from './page/Careers/Careers';
 import ShippingInfo from './page/ShippingInfo/ShippingInfo';
 import PrivacyPolicy from './page/PrivacyPolicy/PrivacyPolicy';
 import TermsConditions from './page/TermsConditions/TermsConditions';
+import Wishlist from './page/Wishlist/Wishlist';
 import './App.css';
 
 

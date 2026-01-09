@@ -7,7 +7,9 @@ import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const { addToCart, isInCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const inCart = isInCart(product.id);
+  const inWishlist = isInWishlist(product.id);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
