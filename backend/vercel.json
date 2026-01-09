@@ -12,12 +12,15 @@
       "dest": "/server.js"
     },
     {
-      "src": "/health",
+      "src": "/(.*\\.js)",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/(.*\\.css)",
       "dest": "/server.js"
     }
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "framework": "express"
+  }
 }
