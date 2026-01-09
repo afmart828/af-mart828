@@ -8,6 +8,19 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 dotenv.config();
 
+// Connect to MongoDB (with graceful error handling for serverless)
+let dbConnected = false;
+const initDB = async () => {
+  if (!dbConnected) {
+    try {
+      await connectDB();
+      dbConnected = true;
+    } catch (error) {
+      console.warn('MongoDB connection failed, API may not work properly');
+    }
+  }
+};
+
 const app = express();
 
 // CORS configuration
@@ -19,6 +32,9 @@ app.use(cors({
 
 // Parse JSON bodies
 app.use(express.json());
+
+// Initialize database connection
+initDB();
 
 // Root route
 app.get('/', (req, res) => {
@@ -45,8 +61,17 @@ app.get('/health', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 
+// Initialize DB and handle requests
+app.all('/api/*', async (req, res, next) => {
+  await initDB();
+  next();
+});
+
 // API health check
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/api/health', async (req, res) => {
+  await initDB();
+  res.json({ status: 'ok', dbConnected });
+});
 
 // Error handling
 app.use(notFound);
