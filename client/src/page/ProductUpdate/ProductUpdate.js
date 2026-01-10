@@ -1,26 +1,22 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Lock, Eye, EyeOff, Package, Save, ArrowLeft, Trash2, Plus } from 'lucide-react';
-import { getAllProducts, createProduct, updateProduct, deleteProduct } from '../../services/api/api';
+import { useNavigate, Link } from 'react-router-dom';
+import { Lock, Eye, EyeOff, Package, Save, ArrowLeft } from 'lucide-react';
 import './ProductUpdate.css';
 
 // Configuration - 4 passwords, each 12 digits
 const VALID_PASSWORDS = ['123456789012', '234567890123', '345678901234', '456789012345'];
 
 const ProductUpdate = () => {
+  const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(false);
   const [passwords, setPasswords] = useState(['', '', '', '']);
   const [showPasswords, setShowPasswords] = useState([false, false, false, false]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Products list state
-  const [products, setProducts] = useState([]);
-  const [productsLoading, setProductsLoading] = useState(false);
-
   // Product form state
   const [product, setProduct] = useState({
-    _id: '',
+    id: '',
     title: '',
     price: '',
     description: '',
@@ -28,7 +24,6 @@ const ProductUpdate = () => {
     image: ''
   });
   const [success, setSuccess] = useState('');
-  const [editingId, setEditingId] = useState(null);
 
   const handlePasswordChange = (index, value) => {
     // Only allow digits and limit to 12 characters
@@ -65,26 +60,12 @@ const ProductUpdate = () => {
 
     if (isValid) {
       setAuthenticated(true);
-      fetchProducts();
     } else {
       setError('Invalid passwords. Access denied.');
       setPasswords(['', '', '', '']);
     }
 
     setLoading(false);
-  };
-
-  // Fetch products from API
-  const fetchProducts = async () => {
-    try {
-      setProductsLoading(true);
-      const data = await getAllProducts();
-      setProducts(data);
-    } catch (err) {
-      console.error('Failed to fetch products:', err);
-    } finally {
-      setProductsLoading(false);
-    }
   };
 
   const handleProductChange = (e) => {
@@ -96,76 +77,33 @@ const ProductUpdate = () => {
     setSuccess('');
   };
 
-  const handleEditProduct = (prod) => {
-    setEditingId(prod._id);
-    setProduct({
-      _id: prod._id,
-      title: prod.title || prod.name || '',
-      price: prod.price?.toString() || '',
-      description: prod.description || '',
-      category: prod.category || '',
-      image: prod.image || ''
-    });
-    setSuccess('');
-    setError('');
-  };
-
-  const handleDeleteProduct = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) return;
-    
-    try {
-      setLoading(true);
-      await deleteProduct(id);
-      setSuccess('Product deleted successfully!');
-      fetchProducts();
-    } catch (err) {
-      setError('Failed to delete product. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleClearForm = () => {
-    setEditingId(null);
-    setProduct({
-      _id: '',
-      title: '',
-      price: '',
-      description: '',
-      category: '',
-      image: ''
-    });
-    setSuccess('');
-    setError('');
-  };
-
   const handleProductSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setSuccess('');
 
     try {
-      const productData = {
-        name: product.title,
-        title: product.title,
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // In a real app, this would call an API to update the product
+      console.log('Product update payload:', {
+        ...product,
         price: parseFloat(product.price) || 0,
-        description: product.description,
-        category: product.category,
-        image: product.image || 'https://via.placeholder.com/300'
-      };
+        id: product.id || Date.now().toString()
+      });
 
-      if (editingId) {
-        await updateProduct(editingId, productData);
-        setSuccess('Product updated successfully!');
-      } else {
-        await createProduct(productData);
-        setSuccess('Product created successfully!');
-      }
-
-      fetchProducts();
-      handleClearForm();
+      setSuccess('Product updated successfully!');
+      setProduct({
+        id: '',
+        title: '',
+        price: '',
+        description: '',
+        category: '',
+        image: ''
+      });
     } catch (err) {
-      setError('Failed to save product. Please try again.');
+      setError('Failed to update product. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -254,38 +192,24 @@ const ProductUpdate = () => {
         <div className="update-card">
           <div className="update-header">
             <Package className="update-icon" />
-            <h1 className="update-title">{editingId ? 'Update Product' : 'Add New Product'}</h1>
-            <p className="update-subtitle">{editingId ? 'Modify product details below' : 'Fill in the details to create a new product'}</p>
+            <h1 className="update-title">Update Product</h1>
+            <p className="update-subtitle">Modify product details below</p>
           </div>
 
           {success && <div className="auth-success">{success}</div>}
           {error && <div className="auth-error">{error}</div>}
 
           <form className="update-form" onSubmit={handleProductSubmit}>
-            <div className="auth-form-group">
-              <label className="auth-label">Product Title</label>
-              <input
-                type="text"
-                name="title"
-                className="auth-input"
-                placeholder="Enter product title"
-                value={product.title}
-                onChange={handleProductChange}
-                required
-              />
-            </div>
-
             <div className="form-row">
               <div className="auth-form-group">
-                <label className="auth-label">Price ($)</label>
+                <label className="auth-label">Product ID</label>
                 <input
                   type="text"
-                  name="price"
+                  name="id"
                   className="auth-input"
-                  placeholder="Enter price"
-                  value={product.price}
+                  placeholder="Enter product ID"
+                  value={product.id}
                   onChange={handleProductChange}
-                  required
                 />
               </div>
               <div className="auth-form-group">
@@ -307,6 +231,32 @@ const ProductUpdate = () => {
                   <option value="automotive">Automotive</option>
                 </select>
               </div>
+            </div>
+
+            <div className="auth-form-group">
+              <label className="auth-label">Product Title</label>
+              <input
+                type="text"
+                name="title"
+                className="auth-input"
+                placeholder="Enter product title"
+                value={product.title}
+                onChange={handleProductChange}
+                required
+              />
+            </div>
+
+            <div className="auth-form-group">
+              <label className="auth-label">Price (Rs)</label>
+              <input
+                type="text"
+                name="price"
+                className="auth-input"
+                placeholder="Enter price"
+                value={product.price}
+                onChange={handleProductChange}
+                required
+              />
             </div>
 
             <div className="auth-form-group">
@@ -334,74 +284,32 @@ const ProductUpdate = () => {
             </div>
 
             <div className="form-actions">
-              {editingId && (
-                <button
-                  type="button"
-                  className="cancel-btn"
-                  onClick={handleClearForm}
-                >
-                  Cancel Edit
-                </button>
-              )}
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => {
+                  setAuthenticated(false);
+                  setPasswords(['', '', '', '']);
+                }}
+              >
+                Cancel
+              </button>
               <button
                 type="submit"
                 className="save-btn"
                 disabled={loading || !product.title || !product.price}
               >
                 {loading ? (
-                  editingId ? 'Updating...' : 'Creating...'
+                  'Updating...'
                 ) : (
                   <>
                     <Save className="btn-icon" />
-                    {editingId ? 'Update Product' : 'Create Product'}
+                    Update Product
                   </>
                 )}
               </button>
             </div>
           </form>
-
-          {/* Products List */}
-          <div className="products-list-section">
-            <h3 className="products-list-title">Existing Products</h3>
-            
-            {productsLoading ? (
-              <div className="products-loading">Loading products...</div>
-            ) : products.length === 0 ? (
-              <div className="products-empty">No products found. Create your first product above!</div>
-            ) : (
-              <div className="products-grid">
-                {products.map((prod) => (
-                  <div key={prod._id} className="product-item">
-                    <img 
-                      src={prod.image || 'https://via.placeholder.com/50'} 
-                      alt={prod.title}
-                      className="product-item-image"
-                    />
-                    <div className="product-item-details">
-                      <span className="product-item-title">{prod.title}</span>
-                      <span className="product-item-price">${prod.price}</span>
-                    </div>
-                    <div className="product-item-actions">
-                      <button
-                        className="edit-btn"
-                        onClick={() => handleEditProduct(prod)}
-                        title="Edit"
-                      >
-                        <Plus size={16} />
-                      </button>
-                      <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteProduct(prod._id)}
-                        title="Delete"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
 
           <div className="auth-footer">
             <Link to="/" className="auth-link">

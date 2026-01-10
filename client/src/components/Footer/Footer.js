@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="footer-grid">
           {/* Company Info */}
           <div className="footer-section">
-            <h3 className="footer-title">AF Mart</h3>
+            <h3 className="footer-title">ShopHub</h3>
             <p className="footer-text">Your one-stop destination for quality products and exceptional service in Pakistan.</p>
           </div>
 
@@ -27,9 +27,8 @@ const Footer = () => {
           <div className="footer-section">
             <h4 className="footer-heading">Customer Service</h4>
             <ul className="footer-links">
-              <li><Link to="/shipping" className="footer-link">Shipping Info</Link></li>
-              <li><Link to="/privacy" className="footer-link">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="footer-link">Terms & Conditions</Link></li>
+              <li><Link to="/privacy-policy" className="footer-link">Privacy Policy</Link></li>
+              <li><Link to="/terms-conditions" className="footer-link">Terms & Conditions</Link></li>
             </ul>
           </div>
 
@@ -56,7 +55,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-copyright">
-          <p>&copy; 2026 AF Mart Pakistan. All rights reserved.</p>
+          <p>&copy; 2026 ShopHub Pakistan. All rights reserved.</p>
         </div>
       </div>
     </footer>

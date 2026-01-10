@@ -138,7 +138,7 @@ const OrderHistory = () => {
                 </div>
                 <div className="order-total">
                   <span className="total-label">Total:</span>
-                  <span className="total-amount">${order.total.toFixed(2)}</span>
+                  <span className="total-amount">Rs {order.total.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -150,7 +150,7 @@ const OrderHistory = () => {
                       <p className="order-item-title">{item.title}</p>
                       <p className="order-item-qty">Quantity: {item.quantity}</p>
                     </div>
-                    <p className="order-item-price">${item.price.toFixed(2)}</p>
+                    <p className="order-item-price">Rs {item.price.toFixed(2)}</p>
                   </div>
                 ))}
               </div>
@@ -180,3 +180,4 @@ const OrderHistory = () => {
 };
 
 export default OrderHistory;
+

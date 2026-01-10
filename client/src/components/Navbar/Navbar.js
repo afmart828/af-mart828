@@ -57,9 +57,9 @@ const Navbar = () => {
           <div className="navbar-main-content">
             {/* Logo */}
             <div className="navbar-logo">
-              <Link to="/" className="logo-link">
+              <Link to="../../../public/favicon.ico" className="logo-link">
                 <div className="logo-icon">
-                  <span className="logo-text">AF</span>
+                  <span className="logo-text">S</span>
                 </div>
                 <span className="logo-brand">AF Mart</span>
               </Link>
@@ -134,9 +134,8 @@ const Navbar = () => {
               {/* Orders */}
               <Link to="/orders" className="action-link action-link-simple">
                 <Package className="action-icon" />
-                <div className="action-text">
-                  <span className="action-label">Returns</span>
-                  <span className="action-title">& Orders</span>
+                <div className="action-text">  
+                  <span className="action-title">Orders</span>
                 </div>
               </Link>
 

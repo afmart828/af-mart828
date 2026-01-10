@@ -305,7 +305,7 @@ const Checkout = () => {
               {error && <div className="checkout-error">{error}</div>}
 
               <button type="submit" className="place-order-button" disabled={loading}>
-                {loading ? 'Processing...' : `Place Order - Rs. ${total.toFixed(2)}`}
+                {loading ? 'Processing...' : `Place Order - Rs ${total.toFixed(2)}`}
               </button>
             </form>
           </div>
@@ -323,7 +323,7 @@ const Checkout = () => {
                   <p className="order-item-title">{item.title}</p>
                   <p className="order-item-quantity">Qty: {item.quantity}</p>
                 </div>
-                <p className="order-item-price">Rs. {(item.price * item.quantity).toFixed(2)}</p>
+                <p className="order-item-price">Rs {(item.price * item.quantity).toFixed(2)}</p>
               </div>
             ))}
           </div>
@@ -331,20 +331,20 @@ const Checkout = () => {
           <div className="summary-calculations">
             <div className="calc-row">
               <span>Subtotal:</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>Rs {subtotal.toFixed(2)}</span>
             </div>
             <div className="calc-row">
               <span>Shipping:</span>
-              <span>${shipping.toFixed(2)}</span>
+              <span>Rs {shipping.toFixed(2)}</span>
             </div>
             <div className="calc-row">
               <span>Tax:</span>
-              <span>${tax.toFixed(2)}</span>
+              <span>Rs {tax.toFixed(2)}</span>
             </div>
             <div className="calc-divider"></div>
             <div className="calc-row calc-total">
               <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
+              <span>Rs {total.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -354,3 +354,4 @@ const Checkout = () => {
 };
 
 export default Checkout;
+

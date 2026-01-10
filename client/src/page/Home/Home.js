@@ -63,7 +63,7 @@ const Home = () => {
           <a href="#" className="view-all-link">View All →</a>
         </div>
         <div className="products-grid">
-          {products.slice(0, 3).map(product => (
+          {products.slice(0, 4).map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

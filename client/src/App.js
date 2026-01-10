@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext/CartContext';
 import { UserProvider } from './context/UserContext/UserContext';
-import { WishlistProvider } from './context/WishlistContext/WishlistContext';
 import MainLayout from './components/MainLayout/MainLayout';
 import Home from './page/Home/Home';
 import ProductPage from './page/ProductPage/ProductPage';
@@ -15,10 +14,8 @@ import AboutUs from './page/AboutUs/AboutUs';
 import Contact from './page/Contact/Contact';
 import FAQ from './page/FAQ/FAQ';
 import Careers from './page/Careers/Careers';
-import ShippingInfo from './page/ShippingInfo/ShippingInfo';
 import PrivacyPolicy from './page/PrivacyPolicy/PrivacyPolicy';
 import TermsConditions from './page/TermsConditions/TermsConditions';
-import Wishlist from './page/Wishlist/Wishlist';
 import './App.css';
 
 
@@ -27,28 +24,24 @@ function App() {
     <Router>
       <UserProvider>
         <CartProvider>
-          <WishlistProvider>
-            <MainLayout>
+          <MainLayout>
             <Routes>
-<Route path="/" element={<Home />} />
+              <Route path="/" element={<Home />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/Signup" element={<Signup />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="/orders" element={<OrderHistory />} />
               <Route path="/product-update" element={<ProductUpdate />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/careers" element={<Careers />} />
-              <Route path="/shipping" element={<ShippingInfo />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsConditions />} />
-              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-conditions" element={<TermsConditions />} />
             </Routes>
           </MainLayout>
-          </WishlistProvider>
         </CartProvider>
       </UserProvider>
     </Router>

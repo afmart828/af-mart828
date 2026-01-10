@@ -30,7 +30,7 @@ const CartItem = ({ item }) => {
       <div className="cart-item-details">
         <h3 className="cart-item-title">{item.title}</h3>
         <p className="cart-item-category">{item.category}</p>
-        <p className="cart-item-price">Rs. {item.price}</p>
+        <p className="cart-item-price">Rs {item.price}</p>
       </div>
 
       <div className="cart-item-actions">
@@ -49,7 +49,7 @@ const CartItem = ({ item }) => {
         </div>
 
         <div className="cart-item-footer">
-          <p className="cart-item-total">Total: Rs. {totalPrice}</p>
+          <p className="cart-item-total">Total: Rs {totalPrice}</p>
           <button className="remove-button" onClick={handleRemove}>
             <Trash2 className="remove-icon" />
             <span>Remove</span>

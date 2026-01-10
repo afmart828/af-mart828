@@ -53,24 +53,24 @@ const CartPage = () => {
           
           <div className="summary-row">
             <span>Subtotal:</span>
-            <span>Rs. {subtotal.toFixed(2)}</span>
+            <span>Rs {subtotal.toFixed(2)}</span>
           </div>
           
           <div className="summary-row">
             <span>Shipping:</span>
-            <span>Rs. {shipping.toFixed(2)}</span>
+            <span>Rs {shipping.toFixed(2)}</span>
           </div>
           
           <div className="summary-row">
             <span>Tax (8%):</span>
-            <span>Rs. {tax.toFixed(2)}</span>
+            <span>Rs {tax.toFixed(2)}</span>
           </div>
           
           <div className="summary-divider"></div>
           
           <div className="summary-row summary-total">
             <span>Total:</span>
-            <span>Rs. {total.toFixed(2)}</span>
+            <span>Rs {total.toFixed(2)}</span>
           </div>
 
           <button className="checkout-button" onClick={handleCheckout}>
@@ -93,3 +93,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+

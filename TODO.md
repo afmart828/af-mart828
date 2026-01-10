@@ -1,23 +1,16 @@
-# TODO List - Fix USD to PKR and Remove Cash on Delivery
+# Task: Complete Static Pages
 
-## Fixes to Implement:
-
-### 1. Fix Careers.js Import Error
-- [x] Change `Dollar` to `DollarSign` in lucide-react import
-
-### 2. Convert USD to PKR in Components
-- [x] CartPage.js - Replace `$` with `Rs. `
-- [x] Checkout.js - Replace `$` with `Rs. `
-- [x] ProductPage.js - Replace `$` with `Rs. `
-- [x] ProductUpdate.js - Replace `$` with `Rs. `
-- [x] CartItem.js - Replace `$` with `Rs. `
-- [x] ProductCard.js - Replace `$` with `Rs. `
-
-### 3. Remove "Cash on Delivery" References
-- [x] TermsConditions.js - Remove "Cash on Delivery (COD)" from payment methods
-- [x] FAQ.js - Remove "Cash on Delivery (COD)" from payment methods answer
+## Pages to Create/Complete:
+- [x] 1. PrivacyPolicy.css - Create CSS file for Privacy Policy page
+- [x] 2. Terms & Conditions.js - Create Terms & Conditions page
+- [x] 3. Terms & Conditions.css - Create CSS file for Terms & Conditions page
+- [ ] 4. App.js routes - Add all 6 page routes to App.js
 
 ## Progress:
-- [x] All fixes completed
-- [x] Build verification
- 
+- AboutUs - ✅ Complete
+- Contact - ✅ Complete
+- FAQ - ✅ Complete
+- Careers - ✅ Complete
+- PrivacyPolicy - ✅ Complete (CSS added)
+- Terms & Conditions - ✅ Complete
+

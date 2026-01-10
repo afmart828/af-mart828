@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart, Share2, Truck, Shield, RotateCcw } from 'lucide-react';
 import StarRating from '../../components/StarRating/StarRating';
 import { useCart } from '../../context/CartContext/CartContext';
-import { useWishlist } from '../../context/WishlistContext/WishlistContext';
 import { getProductById } from '../../services/api/api';
 import './ProductPage.css';
 
@@ -11,7 +10,6 @@ const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
   
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -121,8 +119,8 @@ const ProductPage = () => {
           </div>
 
           <div className="price-section">
-            <span className="current-price">Rs. {product.price.toFixed(2)}</span>
-            <span className="original-price">Rs. {product.originalPrice.toFixed(2)}</span>
+            <span className="current-price">Rs {product.price.toFixed(2)}</span>
+            <span className="original-price">Rs {product.originalPrice.toFixed(2)}</span>
             <span className="discount-badge">-{product.discount}% OFF</span>
           </div>
 
@@ -161,12 +159,8 @@ const ProductPage = () => {
             <button className="buy-now-btn" onClick={handleBuyNow}>
               Buy Now
             </button>
-            <button
-              className={`wishlist-btn ${isInWishlist(product?.id) ? 'active' : ''}`}
-              onClick={() => product && toggleWishlist(product)}
-              title={isInWishlist(product?.id) ? 'Remove from wishlist' : 'Add to wishlist'}
-            >
-              <Heart className={`btn-icon ${isInWishlist(product?.id) ? 'filled' : ''}`} />
+            <button className="wishlist-btn">
+              <Heart className="btn-icon" />
             </button>
             <button className="share-btn">
               <Share2 className="btn-icon" />
@@ -178,7 +172,7 @@ const ProductPage = () => {
               <Truck className="feature-icon" />
               <div>
                 <h4>Free Delivery</h4>
-                <p>On orders over $50</p>
+                <p>On orders over Rs 50</p>
               </div>
             </div>
             <div className="feature-item">
@@ -211,3 +205,4 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
