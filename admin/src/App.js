@@ -164,10 +164,10 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Login Route 
-        <Route path="/login" element={<LoginPage />} /> */}
+        {/* Login Route */}
+        <Route path="/login" element={<LoginPage />} /> 
 
-        {/* Protected Routes 
+        {/* Protected Routes */}
         <Route
           path="/*"
           element={
@@ -175,7 +175,7 @@ const App = () => {
               <AppLayout />
             </ProtectedRoute>
           }
-        /> */}
+        /> 
 
         {/* Redirect root to dashboard */}
         <Route path="/" element={<Navigate to="/overview" replace />} />
