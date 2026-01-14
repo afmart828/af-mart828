@@ -69,12 +69,28 @@ export const createOrder = async (orderData) => {
       resolve({
         id: '#ORD-' + Date.now(),
         ...orderData,
+        paymentMethod: orderData.paymentMethod || 'card',
         status: 'processing',
+        isPaid: orderData.paymentMethod === 'cod' ? false : true,
         createdAt: new Date().toISOString()
       });
     }, 1000);
   });
 };
+
+// Payment Methods Available in Pakistan
+export const PAYMENT_METHODS = [
+  { id: 'card', name: 'Credit / Debit Card', icon: '💳', popular: true, description: 'Visa, Mastercard, UnionPay' },
+  { id: 'jazzcash', name: 'JazzCash', icon: '📱', popular: true, description: 'Mobile Wallet - *786#' },
+  { id: 'easypaisa', name: 'EasyPaisa', icon: '📱', popular: true, description: 'Mobile Wallet - *786#' },
+  { id: 'cod', name: 'Cash on Delivery', icon: '💵', popular: true, description: 'Pay when you receive' },
+  { id: 'bank_transfer', name: 'Bank Transfer (IBFT)', icon: '🏦', popular: false, description: 'Interbank Fund Transfer' },
+  { id: 'khatain', name: 'Khatain (BNPL)', icon: '🛒', popular: false, description: 'Buy Now, Pay Later' },
+  { id: 'nayapay', name: 'NayaPay', icon: '📱', popular: false, description: 'Digital Wallet' },
+  { id: 'sadapay', name: 'Sadapay', icon: '📱', popular: false, description: 'Digital Wallet' },
+  { id: 'paypro', name: 'PayPro', icon: '💳', popular: false, description: 'Payment Gateway' },
+  { id: 'mobilepos', name: 'Mobile POS', icon: '📟', popular: false, description: 'Card on Delivery' },
+];
 
 export const getUserOrders = async (userId) => {
   return new Promise((resolve) => {

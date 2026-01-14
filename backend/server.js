@@ -3,7 +3,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 dotenv.config();
@@ -36,6 +38,12 @@ app.use(express.json());
 // Initialize database connection
 initDB();
 
+// Initialize DB and handle requests for all /api/* routes
+app.all('/api/*', async (req, res, next) => {
+  await initDB();
+  next();
+});
+
 // Root route
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -57,25 +65,28 @@ app.get('/health', (req, res) => {
   res.status(200).send(healthcheck);
 });
 
-// API routes
-app.use('/api/users', userRoutes);
-app.use('/api/products', productRoutes);
-
-// Initialize DB and handle requests
-app.all('/api/*', async (req, res, next) => {
-  await initDB();
-  next();
-});
-
 // API health check
-app.get('/api/health', async (req, res) => {
-  await initDB();
+app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', dbConnected });
 });
+
+// API routes
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Error handling
 app.use(notFound);
 app.use(errorHandler);
+
+// For local development
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 // Vercel Serverless Export
 module.exports = app;

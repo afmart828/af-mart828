@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import backendApi from '../../services/api/backendApi';
 
 const UserContext = createContext();
 
@@ -17,7 +18,7 @@ export const UserProvider = ({ children }) => {
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return !!localStorage.getItem('shophub_user');
+    return !!localStorage.getItem('shophub_token');
   });
 
   useEffect(() => {
@@ -28,10 +29,28 @@ export const UserProvider = ({ children }) => {
     }
   }, [user]);
 
-  const login = (userData) => {
-    setUser(userData);
-    setIsAuthenticated(true);
-    localStorage.setItem('shophub_token', userData.token || 'dummy_token');
+  const login = async (credentials) => {
+    try {
+      const response = await backendApi.loginUser(credentials);
+      
+      if (response.success && response.data) {
+        const userData = {
+          ...response.data,
+          name: response.data.name || credentials.email.split('@')[0]
+        };
+        
+        setUser(userData);
+        setIsAuthenticated(true);
+        localStorage.setItem('shophub_token', userData.token);
+        
+        return userData;
+      } else {
+        throw new Error(response.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
@@ -48,15 +67,28 @@ export const UserProvider = ({ children }) => {
     }));
   };
 
-  const register = (userData) => {
-    const newUser = {
-      ...userData,
-      id: Date.now(),
-      createdAt: new Date().toISOString()
-    };
-    setUser(newUser);
-    setIsAuthenticated(true);
-    localStorage.setItem('shophub_token', 'dummy_token');
+  const register = async (userData) => {
+    try {
+      const response = await backendApi.registerUser(userData);
+      
+      if (response._id) {
+        const newUser = {
+          ...response,
+          name: response.name || userData.name
+        };
+        
+        setUser(newUser);
+        setIsAuthenticated(true);
+        localStorage.setItem('shophub_token', response.token);
+        
+        return newUser;
+      } else {
+        throw new Error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
+    }
   };
 
   const value = {

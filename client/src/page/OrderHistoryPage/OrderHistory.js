@@ -1,7 +1,8 @@
 import { Package, Truck, CheckCircle, XCircle, Eye } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '../../context/UserContext/UserContext';
-import { getUserOrders } from '../../services/api/api';
+import backendApi from '../../services/api/backendApi';
+import { getUserOrders as getMockOrders } from '../../services/api/api';
 import './OrderHistory.css';
 
 const OrderHistory = () => {
@@ -19,8 +20,16 @@ const OrderHistory = () => {
 
       try {
         setLoading(true);
-        const data = await getUserOrders(user?.id);
-        setOrders(data);
+        // Try to fetch from real backend first
+        try {
+          const backendOrders = await backendApi.getUserOrders();
+          setOrders(backendOrders.data || []);
+        } catch (backendErr) {
+          console.warn('Backend not available, using mock orders');
+          // Fallback to mock orders
+          const data = await getMockOrders(user?.id);
+          setOrders(data);
+        }
       } catch (err) {
         setError('Failed to load orders');
         console.error(err);

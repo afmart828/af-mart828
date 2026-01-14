@@ -20,22 +20,19 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
       if (!email || !password) {
         setError('Please fill in all fields');
         setLoading(false);
         return;
       }
 
-      // Call login from UserContext
-      const userData = await login({ email, password });
+      // Call login from UserContext (now uses real backend)
+      await login({ email, password });
       
       // Redirect to home on successful login
       navigate('/');
     } catch (err) {
-      setError('Login failed. Please try again.');
+      setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }

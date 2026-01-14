@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import HeroBanner from '../../components/HeroBanner/HeroBanner';
 import CategoryMenu from '../../components/CatagoryMenu/CatagoryMenu';
 import ProductCard from '../../components/ProductCard/ProductCard';
-import { getAllProducts, getLimitedProducts } from '../../services/api/api';
+import backendApi from '../../services/api/backendApi';
+import { getLimitedProducts } from '../../services/api/api';
 import './Home.css';
 
 const Home = () => {
@@ -14,8 +15,21 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await getLimitedProducts(12);
-        setProducts(data);
+        // Try to fetch from real backend first
+        try {
+          const backendData = await backendApi.getAllProducts();
+          if (backendData && backendData.length > 0) {
+            setProducts(backendData.slice(0, 12));
+            setLoading(false);
+            return;
+          }
+        } catch (backendErr) {
+          console.warn('Backend not available, falling back to mock API');
+        }
+        
+        // Fallback to mock API if backend fails
+        const mockData = await getLimitedProducts(12);
+        setProducts(mockData);
       } catch (err) {
         setError('Failed to load products');
         console.error(err);
@@ -64,7 +78,7 @@ const Home = () => {
         </div>
         <div className="products-grid">
           {products.slice(0, 4).map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product._id || product.id} product={product} />
           ))}
         </div>
       </section>
@@ -76,7 +90,7 @@ const Home = () => {
         </div>
         <div className="products-grid">
           {products.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product._id || product.id} product={product} />
           ))}
         </div>
       </section>

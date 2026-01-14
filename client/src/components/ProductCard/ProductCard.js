@@ -6,17 +6,26 @@ import './ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const { addToCart, isInCart } = useCart();
-  const inCart = isInCart(product.id);
+  // Handle both _id (backend) and id (mock API)
+  const productId = product._id || product.id;
+  const productName = product.name || product.title;
+  const inCart = isInCart(productId);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    addToCart(product);
+    addToCart({
+      ...product,
+      id: productId,
+      productId: productId,
+      title: productName,
+      name: productName
+    });
   };
 
   return (
-    <Link to={`/product/${product.id}`} className="product-card">
+    <Link to={`/product/${productId}`} className="product-card">
       <div className="product-image-wrapper">
-        <img src={product.image} alt={product.title} className="product-image" />
+        <img src={product.image} alt={productName} className="product-image" />
         {product.discount && (
           <span className="product-discount">-{product.discount}%</span>
         )}
@@ -26,7 +35,7 @@ const ProductCard = ({ product }) => {
       </div>
       
       <div className="product-details">
-        <h3 className="product-title">{product.title}</h3>
+        <h3 className="product-title">{productName}</h3>
         
         <div className="product-rating">
           <StarRating rating={product.rating?.rate || product.rating || 0} />
