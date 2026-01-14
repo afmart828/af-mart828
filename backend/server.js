@@ -35,8 +35,34 @@ app.use(cors({
 // Parse JSON bodies
 app.use(express.json());
 
-// Initialize database connection
-initDB();
+// Initialize database connection and seed admin user
+initDB().then(async () => {
+  try {
+    const User = require('./models/User');
+    const bcrypt = require('bcryptjs');
+
+    // Check if admin user exists
+    const existingAdmin = await User.findOne({ email: 'admin@example.com' });
+    if (!existingAdmin) {
+      // Hash the password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('admin123', salt);
+
+      // Create admin user
+      const adminUser = new User({
+        name: 'Admin User',
+        email: 'admin@example.com',
+        password: hashedPassword,
+        isAdmin: true,
+      });
+
+      await adminUser.save();
+      console.log('Admin user created: admin@example.com / admin123');
+    }
+  } catch (error) {
+    console.warn('Error creating admin user:', error.message);
+  }
+});
 
 // Initialize DB and handle requests for all /api/* routes
 app.all('/api/*', async (req, res, next) => {
