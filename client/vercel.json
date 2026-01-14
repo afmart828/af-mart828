@@ -23,5 +23,11 @@
   "rewrites": [
     { "source": "/api/:path*", "destination": "https://af-mart828.vercel.app/:path*" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
-  ]
+  ],
+  "analytics": {
+    "provider": "vercel"
+  },
+  "speedInsights": {
+    "provider": "vercel"
+  }
 }
