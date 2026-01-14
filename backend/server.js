@@ -27,7 +27,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'https://afmart.vercel.app',
+  origin: process.env.CORS_ORIGIN || ['https://afmart.vercel.app', 'https://adminafmart.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
